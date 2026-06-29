@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Chinmay 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --pride-red: #FF0018;
+      --pride-orange: #FFA52C;
+      --pride-yellow: #FFFF41;
+      --pride-green: #008018;
+      --pride-blue: #0000F9;
+      --pride-violet: #86007D;
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --marvel-red: #EC1D24;
+      --marvel-gold: #F0A500;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Comic Neue', cursive;
+      overflow-x: hidden;
+    }
+
+    /* ===================== MARVEL INTRO ===================== */
+    #marvelIntro {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #marvelIntro.hidden { display: none; }
+
+    /* Flip grid */
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 3px;
+      width: min(500px, 90vw);
+      margin-bottom: 32px;
+    }
+
+    .flip-cell {
+      aspect-ratio: 1;
+      background: var(--marvel-red);
+      border-radius: 2px;
+      opacity: 0;
+      animation: cellFlip 0.06s ease forwards;
+    }
+
+    @keyframes cellFlip {
+      0%   { opacity: 0; transform: scaleY(0); }
+      50%  { opacity: 1; transform: scaleY(1.2); }
+      100% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* Marvel logo text */
+    .marvel-logo-box {
+      background: var(--marvel-red);
+      padding: 8px 28px;
+      border-radius: 4px;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.4s, transform 0.4s;
+      margin-bottom: 28px;
+    }
+
+    .marvel-logo-box.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .marvel-logo-box span {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      letter-spacing: 12px;
+      color: #fff;
+    }
+
+    /* Dramatic text */
+    .marvel-title-text {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      letter-spacing: 6px;
+      color: var(--marvel-gold);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+      padding: 0 20px;
+    }
+
+    .marvel-title-text.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .marvel-subtitle-text {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 8vw, 4rem);
+      letter-spacing: 4px;
+      color: #fff;
+      text-align: center;
+      opacity: 0;
+      margin-top: 8px;
+      animation: none;
+      padding: 0 20px;
+    }
+
+    .marvel-subtitle-text.show {
+      animation: marvelReveal 0.6s ease forwards;
+    }
+
+    @keyframes marvelReveal {
+      0%   { opacity: 0; letter-spacing: 20px; }
+      100% { opacity: 1; letter-spacing: 4px; }
+    }
+
+    /* Flash overlay */
+    .flash {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10000;
+      transition: opacity 0.1s;
+    }
+
+    .flash.go { opacity: 1; }
+
+    /* ===================== MAIN SITE ===================== */
+    .pride-bar {
+      height: 10px;
+      background: linear-gradient(90deg,
+        var(--pride-red) 0%,
+        var(--pride-orange) 20%,
+        var(--pride-yellow) 40%,
+        var(--pride-green) 60%,
+        var(--pride-blue) 80%,
+        var(--pride-violet) 100%);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      position: relative;
+    }
+
+    .emoji-rain {
+      font-size: 2rem;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+
+    .emoji-rain span {
+      animation: fall linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-40px); opacity: 1; }
+      100% { transform: translateY(120px); opacity: 0; }
+    }
+
+    .hero h1 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(3rem, 10vw, 7rem);
+      letter-spacing: 4px;
+      background: linear-gradient(90deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      animation: shimmer 3s linear infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero .subtitle {
+      margin-top: 12px;
+      font-size: 1.3rem;
+      color: #ccc;
+      font-weight: 700;
+    }
+
+    .pride-badge {
+      display: inline-block;
+      margin: 24px auto;
+      padding: 10px 28px;
+      border-radius: 50px;
+      background: linear-gradient(135deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-violet));
+      font-family: 'Bangers', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 1px 1px 3px #000;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.05); }
+    }
+
+    /* === CARDS === */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(135deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-violet));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .card .icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+
+    .card h2 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--pride-yellow);
+    }
+
+    .card p { font-size: 1rem; line-height: 1.6; color: #ccc; }
+
+    /* === ROAST === */
+    .roast-section {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .roast-section h2 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      letter-spacing: 3px;
+      color: var(--pride-orange);
+      margin-bottom: 28px;
+    }
+
+    .roast-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+
+    .roast-list li {
+      background: var(--card);
+      border-left: 4px solid var(--pride-violet);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      font-size: 1.05rem;
+      color: #ddd;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .roast-list li span { font-size: 1.4rem; margin-right: 8px; }
+
+    /* ===================== NEWSPAPER ===================== */
+    .newspaper-section {
+      max-width: 820px;
+      margin: 0 auto 70px;
+      padding: 0 20px;
+    }
+
+    .newspaper-section > h2 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      letter-spacing: 3px;
+      color: var(--pride-yellow);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .newspaper {
+      background: #f5f0e8;
+      color: #111;
+      border-radius: 4px;
+      padding: 32px 28px;
+      font-family: 'Times New Roman', serif;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .newspaper::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid #aaa;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    .np-masthead {
+      text-align: center;
+      border-bottom: 3px double #111;
+      padding-bottom: 10px;
+      margin-bottom: 6px;
+    }
+
+    .np-name {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: clamp(2rem, 7vw, 3.8rem);
+      line-height: 1;
+      color: #111;
+    }
+
+    .np-tagline {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .np-dateline {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #555;
+      border-top: 1px solid #aaa;
+      border-bottom: 1px solid #aaa;
+      padding: 3px 0;
+      margin-bottom: 16px;
+    }
+
+    .np-columns {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0 16px;
+    }
+
+    .np-divider { background: #aaa; }
+
+    .np-col h3 {
+      font-size: 1.15rem;
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .np-col .byline {
+      font-size: 0.7rem;
+      font-style: italic;
+      color: #666;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .np-col p {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      text-align: justify;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .np-col .drop-cap::first-letter {
+      float: left;
+      font-size: 3.2rem;
+      line-height: 0.75;
+      margin: 4px 6px 0 0;
+      font-weight: bold;
+    }
+
+    .np-pull-quote {
+      border-top: 2px solid #111;
+      border-bottom: 2px solid #111;
+      padding: 8px 0;
+      margin: 12px 0;
+      text-align: center;
+      font-size: 0.95rem;
+      font-style: italic;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .np-ad {
+      border: 2px solid #111;
+      text-align: center;
+      padding: 10px;
+      margin-top: 12px;
+      font-size: 0.75rem;
+    }
+
+    .np-ad strong { font-size: 1rem; display: block; }
+
+    @media (max-width: 520px) {
+      .np-columns { grid-template-columns: 1fr; }
+      .np-divider { display: none; }
+    }
+
+    /* ===================== STATS CHART ===================== */
+    .stats-section {
+      max-width: 820px;
+      margin: 0 auto 70px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .stats-section h2 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      letter-spacing: 3px;
+      color: var(--pride-violet);
+      margin-bottom: 8px;
+    }
+
+    .stats-section .stats-sub {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--marvel-red), var(--marvel-gold));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .chart-card h3 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: var(--marvel-gold);
+      margin-bottom: 16px;
+    }
+
+    .chart-card canvas { max-height: 260px; }
+
+    /* === CONFETTI BUTTON === */
+    .confetti-wrap {
+      text-align: center;
+      padding-bottom: 60px;
+    }
+
+    .confetti-wrap p { color: #888; margin-bottom: 16px; font-size: 1rem; }
+
+    #partyBtn {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-violet));
+      color: #fff;
+      text-shadow: 1px 1px 4px #000;
+      box-shadow: 0 4px 24px rgba(255,165,44,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    #partyBtn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 6px 32px rgba(134,0,125,0.5);
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      animation: confettiFall 2.5s ease-in forwards;
+      top: -20px;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #444;
+      font-size: 0.85rem;
+    }
+
+    footer span {
+      background: linear-gradient(90deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* section label */
+    .section-label {
+      text-align: center;
+      font-family: 'Bangers', cursive;
+      font-size: 0.9rem;
+      letter-spacing: 6px;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Flash overlay -->
+  <div class="flash" id="flash"></div>
+
+  <!-- ===== MARVEL INTRO ===== -->
+  <div id="marvelIntro">
+    <div class="flip-grid" id="flipGrid"></div>
+    <div class="marvel-logo-box" id="marvelLogo"><span>MARVEL</span></div>
+    <div class="marvel-title-text" id="marvelTitle">PRESENTS A CHINMAY STUDIOS PRODUCTION</div>
+    <div class="marvel-subtitle-text" id="marvelSub">HAPPY BIRTHDAY CHINMAY</div>
+  </div>
+
+  <!-- ===== MAIN SITE ===== -->
+  <div id="mainSite" style="opacity:0; transition: opacity 0.8s;">
+
+    <div class="pride-bar"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="emoji-rain" id="emojiRain"></div>
+      <h1>Happy Birthday<br>Chinmay! 🎂</h1>
+      <p class="subtitle">June 30 • The man, the myth, the legend 💅</p>
+      <div class="pride-badge">🌈 Certified Pride Month Baby 🌈</div>
+    </section>
+
+    <!-- Fun fact cards -->
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🌈</span>
+        <h2>Born in Pride Month</h2>
+        <p>June babies are rare. <em>Fabulous</em> June babies are even rarer. Chinmay said "hold my glitter" and arrived on June 30 — basically a Pride Month grand finale. The universe wasn't subtle about it.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🎊</span>
+        <h2>Last-Minute Larry</h2>
+        <p>Born on June 30 — literally the LAST day of Pride Month. Classic Chinmay move: show up at the very end, steal the spotlight, and leave everyone confused about what just happened.</p>
+      </div>
+      <div class="card">
+        <span class="icon">👑</span>
+        <h2>Officially Iconic</h2>
+        <p>Science has confirmed* that people born in Pride Month have an 847% higher chance of being iconic. Chinmay is a walking peer-reviewed study. (*source: trust me bro)</p>
+      </div>
+    </div>
+
+    <!-- Roast section -->
+    <section class="roast-section">
+      <h2>🔥 A Loving Roast 🔥</h2>
+      <ul class="roast-list">
+        <li><span>🌈</span>Chinmay was born in Pride Month and has never once used it as an excuse. Missed opportunity, king.</li>
+        <li><span>💅</span>His fashion sense is so bold it needed its own flag. Designers are still working on it.</li>
+        <li><span>🎂</span>He turns another year older on June 30, which means he literally ages in Pride Month. Iconic or suspicious? You decide.</li>
+        <li><span>🦄</span>Scientists studied Chinmay for 6 months and concluded he is "a lot." The paper won three awards.</li>
+        <li><span>🎉</span>Happy birthday to someone who has never once lowered the vibe in a room — only raised it to chaotic levels.</li>
+      </ul>
+    </section>
+
+    <!-- ===== NEWSPAPER ===== -->
+    <section class="newspaper-section">
+      <p class="section-label">📰 Breaking News</p>
+      <h2 style="font-family:'Bangers',cursive; font-size:clamp(2rem,6vw,3.5rem); letter-spacing:3px; color:var(--pride-yellow); text-align:center; margin-bottom:28px;">The Birthday Gazette</h2>
+
+      <div class="newspaper">
+        <div class="np-masthead">
+          <div class="np-name">The Chinmay Chronicle</div>
+          <div class="np-tagline">✦ "All The News That's Fit To Roast" ✦</div>
+        </div>
+        <div class="np-dateline">
+          <span>JUNE 30, 2026 — PRIDE MONTH EDITION</span>
+          <span>EST. THE DAY CHINMAY WAS BORN</span>
+          <span>PRICE: ONE BIRTHDAY HUG</span>
+        </div>
+
+        <div class="np-columns">
+          <!-- Column 1 -->
+          <div class="np-col">
+            <h3>Local Man Completes Yet Another Trip Around The Sun; World Somehow Survives</h3>
+            <span class="byline">By Our Correspondent | June 30, 2026</span>
+            <p class="drop-cap">In a stunning development that surprised absolutely no one, local personality Chinmay has successfully completed another full orbit of the Sun, bringing his total to an impressive — if slightly suspicious — number of years.</p>
+            <p>Witnesses report the subject was "very much himself" throughout the entire year, a trait experts describe as "consistent, if alarming." Neighbours noted that energy levels remained dangerously high, and that the subject's opinions were, as always, "expressed loudly and often."</p>
+            <div class="np-pull-quote">"He was born on June 30. We should have known then."<br>— A friend who asked to remain anonymous</div>
+            <p>Authorities confirm no laws of physics were broken, though several were "aggressively questioned." A formal inquiry is pending.</p>
+          </div>
+
+          <div class="np-divider"></div>
+
+          <!-- Column 2 -->
+          <div class="np-col">
+            <h3>Pride Month Baby Confirmed: June 30 Birth Raises Questions, Eyebrows</h3>
+            <span class="byline">Special Report | Rainbow Correspondent</span>
+            <p class="drop-cap">Investigators have confirmed what many long suspected: Chinmay was born on the final day of Pride Month, June 30, in what experts are calling "the most on-brand birth date in recorded history."</p>
+            <p>"The timing is simply not a coincidence," said one analyst, gesturing at a very colourful chart. "June 30 is Peak Pride. The universe was making a statement."</p>
+            <p>Chinmay, reached for comment, reportedly just shrugged and looked fabulous doing it.</p>
+
+            <div class="np-pull-quote">"Born in Pride Month. The data speaks for itself."<br>— Scientists, probably</div>
+
+            <div class="np-ad">
+              <strong>🎂 HAPPY BIRTHDAY CHINMAY 🎂</strong>
+              We'd say "may you have many more years" but honestly at this point
+              the world just has to deal with it.
+              <br><em>— Your Friends (reluctantly)</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STATS CHARTS ===== -->
+    <section class="stats-section">
+      <p class="section-label">📊 Official Data</p>
+      <h2>Chinmay: The Stats</h2>
+      <p class="stats-sub">Peer-reviewed research. Very legit. Do not question the methodology.</p>
+
+      <div class="charts-grid">
+        <!-- Doughnut: Personality breakdown -->
+        <div class="chart-card">
+          <h3>🧬 Personality Composition</h3>
+          <canvas id="personalityChart"></canvas>
+        </div>
+
+        <!-- Bar: Daily activity -->
+        <div class="chart-card">
+          <h3>⏱️ Chinmay's Daily Schedule</h3>
+          <canvas id="scheduleChart"></canvas>
+        </div>
+
+        <!-- Radar: Skills -->
+        <div class="chart-card">
+          <h3>🕸️ Skill Radar</h3>
+          <canvas id="radarChart"></canvas>
+        </div>
+
+        <!-- Doughnut: Vibes -->
+        <div class="chart-card">
+          <h3>✨ Vibe Distribution</h3>
+          <canvas id="vibeChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Party button -->
+    <div class="confetti-wrap">
+      <p>Press this. You know you want to.</p>
+      <button id="partyBtn">🎉 PRESS FOR PARTY 🎉</button>
+    </div>
+
+    <div class="pride-bar"></div>
+
+    <footer>
+      Made with 🌈 love for <span>Chinmay</span> • June 30 • Happy Birthday you absolute legend
+    </footer>
+  </div>
+
+  <script>
+    /* ============ MARVEL INTRO ============ */
+    const grid = document.getElementById('flipGrid');
+    const CELLS = 60;
+    for (let i = 0; i < CELLS; i++) {
+      const c = document.createElement('div');
+      c.classList.add('flip-cell');
+      c.style.animationDelay = (i * 22) + 'ms';
+      // random hue shifts
+      const hues = ['#EC1D24','#c0392b','#e74c3c','#922b21'];
+      c.style.background = hues[i % hues.length];
+      grid.appendChild(c);
+    }
+
+    const totalFlip = CELLS * 22 + 60;
+
+    setTimeout(() => {
+      document.getElementById('marvelLogo').classList.add('show');
+    }, totalFlip);
+
+    setTimeout(() => {
+      document.getElementById('marvelTitle').classList.add('show');
+    }, totalFlip + 500);
+
+    setTimeout(() => {
+      document.getElementById('marvelSub').classList.add('show');
+    }, totalFlip + 1100);
+
+    // Flash then reveal main site
+    setTimeout(() => {
+      const flash = document.getElementById('flash');
+      flash.classList.add('go');
+      setTimeout(() => {
+        document.getElementById('marvelIntro').classList.add('hidden');
+        const site = document.getElementById('mainSite');
+        site.style.opacity = '0';
+        site.style.display = 'block';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => { site.style.opacity = '1'; });
+        });
+        flash.style.opacity = '0';
+        initCharts();
+        initEmojiRain();
+      }, 150);
+    }, totalFlip + 2400);
+
+    /* ============ EMOJI RAIN ============ */
+    function initEmojiRain() {
+      const emojis = ['🌈','🎉','✨','🦄','💅','🎂','👑','🥳','💜','🌟'];
+      const rain = document.getElementById('emojiRain');
+      emojis.forEach((e, i) => {
+        const span = document.createElement('span');
+        span.textContent = e;
+        span.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        span.style.animationDelay = (i * 0.4) + 's';
+        rain.appendChild(span);
+      });
+    }
+
+    /* ============ CONFETTI ============ */
+    const prideColors = ['#FF0018','#FFA52C','#FFFF41','#008018','#0000F9','#86007D','#fff','#ff69b4'];
+    document.getElementById('partyBtn').addEventListener('click', () => {
+      for (let i = 0; i < 120; i++) {
+        const p = document.createElement('div');
+        p.classList.add('confetti-piece');
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.background = prideColors[Math.floor(Math.random() * prideColors.length)];
+        p.style.animationDelay = Math.random() * 1.2 + 's';
+        p.style.animationDuration = (1.8 + Math.random() * 1.5) + 's';
+        const size = (6 + Math.random() * 10) + 'px';
+        p.style.width = size; p.style.height = size;
+        p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 3500);
+      }
+    });
+
+    /* ============ CHARTS ============ */
+    function initCharts() {
+      Chart.defaults.color = '#ccc';
+      Chart.defaults.font.family = "'Comic Neue', cursive";
+
+      const prideRainbow = ['#FF0018','#FFA52C','#FFFF41','#34C759','#0000F9','#86007D','#ff69b4'];
+
+      // 1. Personality Doughnut
+      new Chart(document.getElementById('personalityChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Chaos Energy','Gay Energy','Being Loud','Snacking','Actually Useful','Glitter'],
+          datasets: [{
+            data: [28, 24, 18, 12, 8, 10],
+            backgroundColor: prideRainbow,
+            borderColor: '#1a1a1a',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10, font: { size: 11 } } }
+          },
+          cutout: '60%'
+        }
+      });
+
+      // 2. Schedule Bar
+      new Chart(document.getElementById('scheduleChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Sleeping','Eating','Being Extra','Sending Memes','Actual Work','Plotting'],
+          datasets: [{
+            label: 'Hours/day',
+            data: [6, 3, 4, 5, 2, 4],
+            backgroundColor: ['#86007D','#FF0018','#FFA52C','#FFFF41','#008018','#0000F9'],
+            borderRadius: 8,
+            borderSkipped: false,
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { grid: { color: '#333' }, ticks: { color: '#aaa' }, max: 8 },
+            x: { grid: { display: false }, ticks: { color: '#aaa', font: { size: 10 } } }
+          }
+        }
+      });
+
+      // 3. Radar Chart
+      new Chart(document.getElementById('radarChart'), {
+        type: 'radar',
+        data: {
+          labels: ['Vibes','Drama','Eating','Roasting Friends','Being Iconic','Gay Energy'],
+          datasets: [{
+            label: 'Chinmay',
+            data: [95, 88, 90, 92, 97, 99],
+            backgroundColor: 'rgba(134,0,125,0.25)',
+            borderColor: '#86007D',
+            pointBackgroundColor: '#FFA52C',
+            pointRadius: 5,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              min: 0, max: 100,
+              grid: { color: '#333' },
+              ticks: { display: false },
+              pointLabels: { color: '#ccc', font: { size: 11 } }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 4. Vibe Doughnut
+      new Chart(document.getElementById('vibeChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Main Character','Chaotic Good','Iconic','Menace (Affectionate)','Sleepy','Pride Flag'],
+          datasets: [{
+            data: [30, 20, 22, 15, 5, 8],
+            backgroundColor: ['#F0A500','#EC1D24','#86007D','#0000F9','#008018','#FFA52C'],
+            borderColor: '#1a1a1a',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10, font: { size: 11 } } }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+  </script>
+</body>
+</html>
